@@ -9,6 +9,7 @@ public class MorseLogic {
     private static final Map<String, String> englishToMorse = new HashMap<>();
 
     //  Mappar morse till A-Z
+    // TODO Dra ner på dessa kodrader
     static {
         morseToEnglish.put(".-", "A");
         morseToEnglish.put("-...", "B");
