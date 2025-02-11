@@ -5,47 +5,47 @@ import java.util.Map;
 
 public class MorseLogic {
     //  Skapar två HashMaps för engelska och morsekod
-    private static final Map<String, String> morseToEnglish = new HashMap<>();
-    private static final Map<String, String> englishToMorse = new HashMap<>();
+    private static final Map<String, String> morseTillEngelska = new HashMap<>();
+    private static final Map<String, String> engelskaTillMorse = new HashMap<>();
 
     //  Mappar morse till A-Z
-    // TODO Dra ner på dessa kodrader
+    // TODO Dra ner på dessa kodrader, altertivt lägga alftabeten i olika arrayer
     static {
-        morseToEnglish.put(".-", "A");
-        morseToEnglish.put("-...", "B");
-        morseToEnglish.put("-.-.", "C");
-        morseToEnglish.put("-..", "D");
-        morseToEnglish.put(".", "E");
-        morseToEnglish.put("..-.", "F");
-        morseToEnglish.put("--.", "G");
-        morseToEnglish.put("....", "H");
-        morseToEnglish.put("..", "I");
-        morseToEnglish.put(".---", "J");
-        morseToEnglish.put("-.-", "K");
-        morseToEnglish.put(".-..", "L");
-        morseToEnglish.put("--", "M");
-        morseToEnglish.put("-.", "N");
-        morseToEnglish.put("---", "O");
-        morseToEnglish.put(".--.", "P");
-        morseToEnglish.put("--.-", "Q");
-        morseToEnglish.put(".-.", "R");
-        morseToEnglish.put("...", "S");
-        morseToEnglish.put("-", "T");
-        morseToEnglish.put("..-", "U");
-        morseToEnglish.put("...-", "V");
-        morseToEnglish.put(".--", "W");
-        morseToEnglish.put("-..-", "X");
-        morseToEnglish.put("-.--", "Y");
-        morseToEnglish.put("--..", "Z");
+        morseTillEngelska.put(".-", "A");
+        morseTillEngelska.put("-...", "B");
+        morseTillEngelska.put("-.-.", "C");
+        morseTillEngelska.put("-..", "D");
+        morseTillEngelska.put(".", "E");
+        morseTillEngelska.put("..-.", "F");
+        morseTillEngelska.put("--.", "G");
+        morseTillEngelska.put("....", "H");
+        morseTillEngelska.put("..", "I");
+        morseTillEngelska.put(".---", "J");
+        morseTillEngelska.put("-.-", "K");
+        morseTillEngelska.put(".-..", "L");
+        morseTillEngelska.put("--", "M");
+        morseTillEngelska.put("-.", "N");
+        morseTillEngelska.put("---", "O");
+        morseTillEngelska.put(".--.", "P");
+        morseTillEngelska.put("--.-", "Q");
+        morseTillEngelska.put(".-.", "R");
+        morseTillEngelska.put("...", "S");
+        morseTillEngelska.put("-", "T");
+        morseTillEngelska.put("..-", "U");
+        morseTillEngelska.put("...-", "V");
+        morseTillEngelska.put(".--", "W");
+        morseTillEngelska.put("-..-", "X");
+        morseTillEngelska.put("-.--", "Y");
+        morseTillEngelska.put("--..", "Z");
 
         //Omvänd map för engelska till Morse
-        for (Map.Entry<String, String> entry : morseToEnglish.entrySet()){
-            englishToMorse.put(entry.getValue(), entry.getKey());
+        for (Map.Entry<String, String> entry : morseTillEngelska.entrySet()){
+            engelskaTillMorse.put(entry.getValue(), entry.getKey());
         }
     }
 
     //  Metod för morse till engelska
-    public String morseToEnglish(String morse) {
+    public String morseTillEngelska(String morse) {
         //  Kollar så att input inte är null/tom
         if (morse == null || morse.isEmpty()) {
             throw new IllegalArgumentException("Morsekoden får inte vara tom");
@@ -59,17 +59,17 @@ public class MorseLogic {
         //  Går igenom arrayen med input
         for (String word : words) {
             // Kollar efter giltig morsekod
-            if (!morseToEnglish.containsKey(word)) {
+            if (!morseTillEngelska.containsKey(word)) {
                 throw new IllegalArgumentException("Ogilitg morsekod: " + word);
             }
             // Konverterar morse till engelska
-            sb.append(morseToEnglish(word));
+            sb.append(morseTillEngelska(word));
         }
         return sb.toString();
     }
 
     //  Metod för engelska till morse
-    public  String englishToMorse(String english) {
+    public  String engelskaTillMorse(String english) {
         //  Kollar så att input inte är null/tom
         if (english == null || english.isEmpty()) {
             throw new IllegalArgumentException("Engelska texten får inte vara tom");
@@ -81,15 +81,14 @@ public class MorseLogic {
         for (char c : english.toUpperCase().toCharArray()) {
             if (c == ' ') continue; //  Hoppar över mellanslag
             // Kontrollerar så att tecknet finns i HashMapen
-            if (!englishToMorse.containsKey(String.valueOf(c))) {
+            if (!engelskaTillMorse.containsKey(String.valueOf(c))) {
                 throw new IllegalArgumentException("Ogiltigt tecken:" + c);
             }
             //  Konverterar engelska till morse
             //  Lägger också till ett mellanslag för läskunnighet
-            sb.append(englishToMorse.get(String.valueOf(c))).append(" ");
+            sb.append(engelskaTillMorse.get(String.valueOf(c))).append(" ");
         }
         //Returnerar strängen så att den kan printas
         return sb.toString().trim();
     }
-
 }
