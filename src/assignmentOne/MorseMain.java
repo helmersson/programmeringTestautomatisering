@@ -26,12 +26,14 @@ public class MorseMain {
     }
 
     //  Skriver ut menyn när den körs
-    private static void skrivMeny() {
+    public static void skrivMeny() {
         //  Meny för användaren
-        System.out.println("Välj konverteringstyp");
-        System.out.println("1. Morsekod till engelska");
-        System.out.println("2. Engelska till morsekod");
-        System.out.println("3. Avsluta");
+        System.out.println("""
+                Välj konverteringstyp
+                1. Morsekod till engelska
+                2. Engelska till morsekod
+                3. Avsluta
+                """);
     }
 
     //  läser in menyVal och validerar det
@@ -39,7 +41,7 @@ public class MorseMain {
         int menyVal;
         while (true) {
             try {
-                System.out.print("Ange ditt val (1-3): ");
+                System.out.println("Ange ditt val (1-3): ");
                 // omvandlar input till int
                 menyVal = Integer.parseInt(scanner.nextLine());
                 //  Kontrollera om input är 1-3
