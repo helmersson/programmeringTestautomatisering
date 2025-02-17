@@ -1,32 +1,42 @@
 package assignmentOne;
 
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.TestReporter;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 public class MorseTest {
 
-    private MorseLogic morseLogic;
-    private MorseMain morseMain;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream orginalOutPut = System.out;
+    private final PrintStream orginalOutput = System.out;
+    private final InputStream orginalInput = System.in;
 
     TestInfo testInfo;
     TestReporter testReporter;
+
+    private MorseLogic morseLogic;
+    private MorseMain morseMain;
+    private ByteArrayInputStream testIn;
+
+    private void input(String data) {
+        testIn = new ByteArrayInputStream(data.getBytes());
+        System.setIn(testIn);
+    }
 
 
     @BeforeEach
     void setUp(TestInfo testInfo, TestReporter testReporter) {
         this.testInfo = testInfo;
-        this.testReporter = testReporter; 
+        this.testReporter = testReporter;
         morseLogic = new MorseLogic();
         morseMain = new MorseMain();
-
 
         testReporter.publishEntry("Kör: " + testInfo.getDisplayName() + " med tagen: " + testInfo.getTags());
 
@@ -36,13 +46,14 @@ public class MorseTest {
 
     @AfterEach
     public void restoreStreams() {
-        System.setOut(orginalOutPut);
+        System.setOut(orginalOutput);
+        System.setIn(orginalInput);
     }
 
     @Test
     @Tag("Logic")
     @DisplayName("Testar morse -> Engelska")
-     void testMorseTillEngelska() {
+    void testMorseTillEngelska() {
 
         String morse = ".... . .-.. .-.. --- .-- --- .-. .-.. -..";
         String expected = "HELLOWORLD";
@@ -71,7 +82,6 @@ public class MorseTest {
         assertEquals(expected, actual);
     }
 
-    //  TODO: Fråga Staffan om hjälp! Har silvertejpat denna med .stripTrailing();
     @Test
     @Tag("Main")
     @DisplayName("Testar skrivMeny()")
@@ -82,8 +92,9 @@ public class MorseTest {
                 1. Morsekod till engelska
                 2. Engelska till morsekod
                 3. Avsluta
-                """.stripTrailing();
-        String actual = outContent.toString().stripTrailing();
+                """;
+
+        String actual = outContent.toString();
         assertEquals(expected, actual);
     }
 
@@ -94,7 +105,7 @@ public class MorseTest {
         MorseMain.skrivMeny();
         String output = outContent.toString();
         assertFalse(output.isEmpty());
-        System.err.println("Captured output: " + output);
+        System.err.println(output);
     }
 
     @Test
@@ -102,8 +113,49 @@ public class MorseTest {
     @DisplayName("Testar Engelska -> Morse Skriver SOS 100x")
     void testLångInputEngelskaTillMorse() {
         String engelska = "SOS".repeat(100);
-        String expected = "... --- ... ".repeat(100).trim();
+        String expected = "... --- ... ".repeat(100).stripTrailing();
         String actual = morseLogic.engelskaTillMorse(engelska);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @Tag("Main")
+    @DisplayName("Testar korrekt input i menyVal")
+    void testMenyValKorrektInput() {
+        input("""
+                1
+                2
+                3""");
+        Scanner scanner = new Scanner(System.in);
+
+        //  Test 1
+        int expected1 = 1;
+        int actual1 = MorseMain.läsMenyVal(scanner);
+        assertEquals(expected1, actual1);
+
+        //  Test 2
+        int expected2 = 2;
+        int actual2 = MorseMain.läsMenyVal(scanner);
+        assertEquals(expected2, actual2);
+
+        //  Test 3
+        int expected3 = 3;
+        int actual3 = MorseMain.läsMenyVal(scanner);
+        assertEquals(expected3, actual3);
+        scanner.close();
+    }
+
+    @Test
+    @Tag("Main")
+    @DisplayName("Testar inkorrekt input i menyVal")
+    void testMenyValInkorrektInput() {
+        input("2");
+        Scanner scanner = new Scanner(System.in);
+
+
+        int expected = 2;
+        int actual = MorseMain.läsMenyVal(scanner);
+        assertEquals(expected, actual);
+        scanner.close();
     }
 }

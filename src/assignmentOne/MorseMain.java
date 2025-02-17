@@ -28,7 +28,7 @@ public class MorseMain {
     //  Skriver ut menyn när den körs
     public static void skrivMeny() {
         //  Meny för användaren
-        System.out.println("""
+        System.out.print("""
                 Välj konverteringstyp
                 1. Morsekod till engelska
                 2. Engelska till morsekod
