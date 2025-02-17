@@ -69,7 +69,7 @@ public class MorseLogic {
                 throw new IllegalArgumentException("Ogiltigt tecken:" + c);
             }
             //  Konverterar engelska till morse
-            //  Lägger också till ett mellanslag efter varje morsebokstav
+            //  Lägger också till ett mellanslag efter varje morsetecken
             sb.append(engelskaTillMorse.get(String.valueOf(c))).append(" ");
         }
         //Returnerar strängen så att den kan printas samt tar bort extra mellanslag i slutet

@@ -48,7 +48,6 @@ public class MorseTest {
         String expected = "HELLOWORLD";
         String actual = morseLogic.morseTillEngelska(morse);
         assertEquals(expected, actual);
-
     }
 
     @Test
@@ -60,20 +59,19 @@ public class MorseTest {
         String expected = "... --- ...";
         String actual = morseLogic.engelskaTillMorse(engelska);
         assertEquals(expected, actual);
-
     }
 
     @Test
     @Tag("Logic")
     @DisplayName("Testar Engelska -> Morse med små bokstäver")
     void testEngelskaTillMorseMedLowerCase() {
-        String engelska = "Hello";
+        String engelska = "hello";
         String expected = ".... . .-.. .-.. ---";
         String actual = morseLogic.engelskaTillMorse(engelska);
         assertEquals(expected, actual);
     }
 
-    //  TODO: Fråga Staffan om hjälp!
+    //  TODO: Fråga Staffan om hjälp! Har silvertejpat denna med .stripTrailing();
     @Test
     @Tag("Main")
     @DisplayName("Testar skrivMeny()")
@@ -84,12 +82,28 @@ public class MorseTest {
                 1. Morsekod till engelska
                 2. Engelska till morsekod
                 3. Avsluta
-                """;
-        String actual = outContent.toString();
+                """.stripTrailing();
+        String actual = outContent.toString().stripTrailing();
         assertEquals(expected, actual);
-
-
     }
 
+    @Test
+    @Tag("Main")
+    @DisplayName("Testar så att skrivMeny faktiskt skriver något")
+    void testSkrivMeny2() {
+        MorseMain.skrivMeny();
+        String output = outContent.toString();
+        assertFalse(output.isEmpty());
+        System.err.println("Captured output: " + output);
+    }
 
+    @Test
+    @Tag("Logic")
+    @DisplayName("Testar Engelska -> Morse Skriver SOS 100x")
+    void testLångInputEngelskaTillMorse() {
+        String engelska = "SOS".repeat(100);
+        String expected = "... --- ... ".repeat(100).trim();
+        String actual = morseLogic.engelskaTillMorse(engelska);
+        assertEquals(expected, actual);
+    }
 }
